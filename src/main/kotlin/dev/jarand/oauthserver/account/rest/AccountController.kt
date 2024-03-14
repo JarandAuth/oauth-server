@@ -54,7 +54,8 @@ class AccountController(
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         }
         val signedToken = tokenService.createTokenFromRefreshToken(tokenData = tokenData)
-        return ResponseEntity.ok(TokenResource(token = signedToken, refreshToken = signedRefreshToken))
+        val refreshedSignedRefreshToken = tokenService.createRefreshTokenFromRefreshToken(tokenData = tokenData)
+        return ResponseEntity.ok(TokenResource(token = signedToken, refreshToken = refreshedSignedRefreshToken))
     }
 
     @GetMapping("me")

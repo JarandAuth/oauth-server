@@ -56,6 +56,25 @@ class TokenService(
         return signedToken
     }
 
+    fun createRefreshTokenFromRefreshToken(tokenData: TokenData): String {
+        logger.info("Creating refresh token from refresh token for subject: ${tokenData.subject}")
+        val issuedAt = Instant.now()
+        val expiration = issuedAt.plusSeconds(60)
+
+        val signedToken = Jwts.builder()
+            .subject(tokenData.subject)
+            .claim("authenticationIdentifier", tokenData.id)
+            .claim("authenticationMethod", "REFRESH_TOKEN")
+            .claim("scope", tokenData.scope.joinToString(" "))
+            .id(UUID.randomUUID().toString())
+            .issuedAt(Date.from(issuedAt))
+            .expiration(Date.from(expiration))
+            .signWith(privateKey)
+            .compact()
+        logger.info("Created refresh token from refresh token for subject: ${tokenData.subject}")
+        return signedToken
+    }
+
     fun createRefreshTokenForDeveloper(account: Account): String {
         logger.info("Creating refresh token for developer account with id: ${account.id} and email: ${account.email}")
         val issuedAt = Instant.now()

@@ -59,7 +59,7 @@ class TokenService(
     fun createRefreshTokenFromRefreshToken(tokenData: TokenData): String {
         logger.info("Creating refresh token from refresh token for subject: ${tokenData.subject}")
         val issuedAt = Instant.now()
-        val expiration = issuedAt.plusSeconds(60)
+        val expiration = issuedAt.plusSeconds(600)
 
         val signedToken = Jwts.builder()
             .subject(tokenData.subject)

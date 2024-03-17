@@ -53,10 +53,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Download dependencies
+      - name: Download Maven dependencies
         run: mvn -B dependency:go-offline
 
-      - name: Build with Maven
+      - name: Build Jar file
         run: mvn -B package
 
       - name: Build and push Docker image
